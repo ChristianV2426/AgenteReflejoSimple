@@ -1,0 +1,3 @@
+# izquierdo arriba derecho abajo queso acción
+1 1 1 1 0 arriba
+1 1 1 0 0 arriba
