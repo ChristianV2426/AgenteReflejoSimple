@@ -23,7 +23,7 @@ class Lector:
     def intentar_bool(self,s):
         try:
             int(s)
-            return bool(s)
+            return bool(int(s))
         
         except ValueError:
             return s

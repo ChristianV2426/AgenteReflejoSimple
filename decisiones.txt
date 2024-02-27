@@ -1,3 +1,16 @@
 # izquierdo arriba derecho abajo queso acción
 1 1 1 1 0 arriba
 1 1 1 0 0 arriba
+1 1 0 1 0 arriba
+1 1 0 0 0 izquierda
+1 0 1 1 0 izquierda
+1 0 1 0 0 derecha
+1 0 0 1 0 izquierda
+1 0 0 0 0 izquierda
+0 1 1 1 0 arriba
+0 1 1 0 0 derecha
+0 1 0 1 0 abajo
+0 1 0 0 0 arriba
+0 0 1 1 0 derecha
+0 0 1 0 0 derecha
+0 0 0 1 0 abajo

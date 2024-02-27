@@ -8,6 +8,7 @@
 
 import pygame
 import os
+import time
 
 ruta_actual = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,21 +20,25 @@ class Entorno:
         self.columnas = len(matriz_entorno[0])
         self.matriz_decisiones = matriz_decisiones
         self.percepciones = len(matriz_decisiones)
-        self.sensores = len(matriz_decisiones[0])
         self.agentes = agentes
 
         self.rectangulo_ancho = ancho // self.columnas
         self.ancho = self.columnas * self.rectangulo_ancho
         self.rectangulo_alto = alto // self.filas
         self.alto = self.filas * self.rectangulo_alto
+
         self.titulo = titulo
         self.ventana = pygame.display.set_mode((self.ancho, self.alto))
         pygame.display.set_caption(self.titulo)
+
+        pygame.font.init()
+        self.font = pygame.font.Font(pygame.font.get_default_font(), 32)
 
         self.icono_raton = pygame.image.load(os.path.join(ruta_actual, "imagenes/icono_raton.png"))
         self.icono_raton = pygame.transform.scale(self.icono_raton, (self.rectangulo_ancho*0.6, self.rectangulo_alto*0.6))
         self.icon_raton_offset_x = (self.rectangulo_ancho - self.icono_raton.get_width()) // 2
         self.icon_raton_offset_y = (self.rectangulo_alto - self.icono_raton.get_height()) // 2
+
         for agente in self.agentes:
             agente.actualizar_icono(self.icono_raton)
             agente.ajustar_posicion_actual(self.rectangulo_ancho, self.rectangulo_alto, self.icon_raton_offset_x, self.icon_raton_offset_y)
@@ -46,10 +51,20 @@ class Entorno:
         self.colores = [(192, 192, 192), (28, 68, 88),]
 
 
-    def mostrar_entorno(self):
+    def desplegar_entorno(self):
+        ha_ganado = False
+
         while True:
             evento = pygame.event.poll()
             if evento.type == pygame.QUIT:
+                break
+
+            if (ha_ganado):
+                texto = self.font.render("¡El ratón ha encontrado el queso!", True, (102, 0, 0))
+                self.ventana.blit(texto, ((2 * self.ancho // 3) - (2 * texto.get_width() // 3), (2 * self.alto // 3) - (2 * texto.get_height() // 3)))
+
+                pygame.display.flip()
+                time.sleep(5)
                 break
 
             for fila in range(self.filas):
@@ -68,11 +83,11 @@ class Entorno:
                             self.ventana.blit(self.icono_queso, (columna * self.rectangulo_ancho + self.icon_queso_offset_x, fila * self.rectangulo_alto + self.icon_queso_offset_y))
 
             for agente in self.agentes:
-                agente.actualizar(self.matriz_entorno, self.matriz_decisiones)
+                ha_ganado = agente.actualizar(self.matriz_entorno, self.matriz_decisiones)
                 agente.dibujar(self.ventana)
 
-
             pygame.display.flip()
+            time.sleep(0.01)
 
         pygame.quit()
 
